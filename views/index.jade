@@ -2,4 +2,20 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  if (message)
+    p=message
+  if (items)
+    each item in items
+      li
+        article
+          section=item.content
+          section
+            strong=item.user_id
+  form(action='/' method='post' accept-charset='utf-8')
+    input(type='text' placeholder='post content' name='content' required='true')
+    br/
+    |by
+    br/
+    input(type='text' placeholder='User ID' name='user_id' required='true')
+    br/
+    button(type='submit', value='submit') Submit
