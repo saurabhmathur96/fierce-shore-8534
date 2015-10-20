@@ -54,6 +54,9 @@ router.post('/login', function(req, res, next) {
  }
  else {
    User.findOne({user_id: req.body.user_id}, function (err, user) {
+     if(!user){
+       res.json({message: 'Credentials not valid'});
+     }
      if(bcrypt.compareSync(req.body.password, user.password)) {
            res.json({message: 'Credentials valid'});
      }
