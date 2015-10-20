@@ -37,7 +37,7 @@ router.post('/register', function(req, res, next) {
       if(err){
         console.log(err);
         res.statusCode = 400;
-        return res.send('Error 400: User id a.');
+        return res.send('Error 400: User id taken.');
       }
       else{
         res.json({message: 'Registration Successful'});
