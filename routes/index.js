@@ -27,9 +27,10 @@ router.post('/register', function(req, res, next) {
   }
   else {
 
+    var password_hash = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
     new User({
       user_id : req.body.user_id,
-      password : bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
+      password : password_hash
     }).save( function ( err, item, count ) {
 
       if(err){
@@ -40,7 +41,7 @@ router.post('/register', function(req, res, next) {
         res.json({message: 'Registration Successful'});
       }
 
-    } )
+    } );
   }
 
 });
