@@ -29,6 +29,7 @@ router.post('/register', function(req, res, next) {
 
     var password_hash = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
     new User({
+      _id : req.body.user_id,
       user_id : req.body.user_id,
       password : password_hash
     }).save( function ( err, item, count ) {
