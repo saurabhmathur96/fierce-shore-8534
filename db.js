@@ -7,7 +7,13 @@ var NewsItem = new Schema({
   updated_at : Date
 });
 
+var User = new Schema({
+  user_id : String,
+  password: String
+});
+
 mongoose.model( 'NewsItem', NewsItem );
+mongoose.model( 'User', User );
 
 var mongoUri = process.env.NEWSAPP_MONGOLAB_URI || 'mongodb://localhost/NewsApp'
 //console.log(mongoUri);

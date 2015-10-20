@@ -7,7 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+
 
 var app = express();
 
@@ -32,7 +32,6 @@ app.use(function(req, res, next) {
 });
 
 app.use('/api/', routes);
-app.use('/users', users);
 
 
 var router = express.Router();
