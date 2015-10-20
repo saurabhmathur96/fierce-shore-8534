@@ -8,6 +8,7 @@ var NewsItem = new Schema({
 });
 
 var User = new Schema({
+  _id : String,
   user_id : String,
   password: String
 });
