@@ -1,4 +1,5 @@
-require('./db');
+var path = require('path');
+require(path.join(__dirname, '..', 'db'));
 var express = require('express');
 var bcrypt = require('bcrypt');
 var router = express.Router();

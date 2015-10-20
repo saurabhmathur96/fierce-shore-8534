@@ -1,4 +1,5 @@
-require('./db');
+var path = require('path');
+require(path.join(__dirname, 'db'));
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -6,7 +7,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
+var index = require('./routes/index');
+var register = require('./routes/register');
 
 
 var app = express();
@@ -31,15 +33,15 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/api/', routes);
-
+app.use('/api/', index);
+app.use('/api/register', register);
 
 var router = express.Router();
 router.get('/', function(req, res) {
     res.json({ message: 'hello, world' });
 });
 
-app.use('/', router);
+
 
 
 
