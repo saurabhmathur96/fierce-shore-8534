@@ -60,7 +60,7 @@ router.post('/login', function(req, res, next) {
      if(!user){
        res.json({message: 'Credentials not valid'});
      }
-     if(bcrypt.compareSync(req.body.password, user.password)) {
+     if(user && bcrypt.compareSync(req.body.password, user.password)) {
            res.json({message: 'Credentials valid'});
      }
      else {
