@@ -86,7 +86,7 @@ router.post( '/news/', function (req, res) {
   //bcrypt.compareSync(password, doc['password_hash'])
 
   User.findOne({user_id: req.body.user_id}, function (err, user) {
-    if(bcrypt.compareSync(req.body.password, user.password)) {
+    if(user && bcrypt.compareSync(req.body.password, user.password)) {
       new NewsItem( {
         content: req.body.content,
         user_id: req.body.user_id,
