@@ -6,9 +6,12 @@ var mongoose = require( 'mongoose' );
 var Schema = mongoose.Schema;
 
 var NewsItem = new Schema({
-  user_id : String,
+  username : String,
   content : String,
-  updated_at : Date
+  updated_at : {
+    type: Date,
+    default: Date.now()
+  }
 });
 
 

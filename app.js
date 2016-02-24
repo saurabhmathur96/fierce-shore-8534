@@ -33,7 +33,6 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 
 
@@ -51,14 +50,6 @@ var news = require(path.join(__dirname, 'routes', 'news'));
 app.use('/api/login/', index);
 app.use('/api/news/', news);
 app.use('/api/register/', register);
-
-var router = express.Router();
-router.get('/', function(req, res) {
-  res.json({
-    message: 'hello, world'
-  });
-});
-app.use('/', router);
 
 
 

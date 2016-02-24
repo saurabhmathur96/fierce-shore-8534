@@ -22,7 +22,12 @@ function onFindAll(req, res) {
       items: items
     });
   }
-  NewsItem.find({}, onFind);
+
+  var options = {
+    username: 1,
+    content: 1
+  }
+  NewsItem.find({}, options, onFind);
 }
 
 
@@ -37,9 +42,10 @@ function onCreate(req, res) {
 
   var news = new NewsItem({
     content: req.body.content,
-    username: req.body.username,
-    updated_at: Date.now()
+    username: req.user.username,
   });
+
+  console.log(news);
 
 
   function onSave(err, item) {
@@ -48,7 +54,11 @@ function onCreate(req, res) {
     } else {
       res.json({
         message: 'News Item added',
-        item: item
+        item: {
+          username: item.username,
+          content: item.content,
+          updated_at: item.updated_at
+        }
       });
     }
 
