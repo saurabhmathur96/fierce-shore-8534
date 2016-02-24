@@ -1,17 +1,26 @@
 var path = require('path');
-require(path.join(__dirname, 'db'));
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
-var index = require('./routes/index');
-var register = require('./routes/register');
+var mongoUri = process.env.NEWSAPP_MONGOLAB_URI || 'mongodb://localhost/NewsApp'
+mongoose.connect(mongoUri);
+
 
 
 var app = express();
+
+
+var passport = require('passport');
+var jwtStrategy = require(path.join(__dirname, 'authentication', 'jwt-strategy'));
+var localStrategy = require(path.join(__dirname, 'authentication', 'local-strategy'));
+passport.use(jwtStrategy);
+passport.use(localStrategy);
+app.use(passport.initialize());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,7 +30,9 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -33,16 +44,22 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/api/', index);
-app.use('/api/register', register);
+var index = require(path.join(__dirname, 'routes', 'index'));
+var register = require(path.join(__dirname, 'routes', 'register'));
+var news = require(path.join(__dirname, 'routes', 'news'));
+
+
+app.use('/api/login/', index);
+app.use('/api/news/', news);
+app.use('/api/register/', register);
 
 var router = express.Router();
 router.get('/', function(req, res) {
-    res.json({ message: 'hello, world' });
+  res.json({
+    message: 'hello, world'
+  });
 });
-
-
-
+app.use('/', router);
 
 
 
@@ -64,7 +81,13 @@ if (app.get('env') === 'development') {
       message: err.message,
       error: err
     });*/
-    res.json({'error': {'message': err.message, 'error': err}});
+    res.json({
+      'error': {
+        'message': err.message,
+        'error': err
+      }
+    });
+    console.log(err.stack);
   });
 }
 
@@ -76,7 +99,11 @@ app.use(function(err, req, res, next) {
     message: err.message,
     error: {}
   });*/
-  res.json({'error': {'message': err.message}});
+  res.json({
+    'error': {
+      'message': err.message
+    }
+  });
 });
 
 //app.post( '/create', routes.create );

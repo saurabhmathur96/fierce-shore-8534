@@ -1,114 +1,40 @@
+/**
+ * index.js - handles routes at '/'
+ */
+
 var path = require('path');
-require(path.join(__dirname, '..', 'db'));
-var express = require('express');
-var bcrypt = require('bcrypt');
-var router = express.Router();
+var router = require('express').Router();
+var passport = require('passport');
+var async = require('async');
+var jwt = require('jsonwebtoken');
 
-var mongoose = require( 'mongoose' );
-var NewsItem = mongoose.model( 'NewsItem' );
-var User = mongoose.model( 'User' );
+var User = require(path.join(__dirname, '..', 'models', 'user'));
 
 
-/*function (req, res) {
-  NewsItem.find( function (err, items, count) {
-    res.render( 'index', {
-      title: 'All Items',
-      items: items
-    } );
-  } );
-};
-*/
 
 
-router.post('/register', function(req, res, next) {
-  if(!req.body.hasOwnProperty('user_id') || !req.body.hasOwnProperty('password')) {
-    res.statusCode = 400;
-    return res.send('Error 400: Post syntax incorrect.');
+
+function onLogin(req, res) {
+  var payload = {
+    username: req.user.username
   }
-  else {
-
-    var password_hash = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
-    new User({
-      _id : req.body.user_id,
-      user_id : req.body.user_id,
-      password : password_hash
-    }).save( function ( err, item, count ) {
-
-      if(err){
-        console.log(err);
-        res.statusCode = 400;
-        return res.send('Error 400: User id taken.');
-      }
-      else{
-        res.status(200).send({message: 'Registration Successful'});
-      }
-
-    } );
-  }
-
-});
-
-
-router.post('/login', function(req, res, next) {
-  if(!req.body.hasOwnProperty('user_id') ||
-  !req.body.hasOwnProperty('password')) {
-   res.statusCode = 400;
-   return res.send('Error 400: Post syntax incorrect.');
- }
- else {
-   User.findOne({user_id: req.body.user_id}, function (err, user) {
-     if(!user){
-       res.status(400).send({message: 'Credentials not valid'});
-     }
-     if(user && bcrypt.compareSync(req.body.password, user.password)) {
-           res.json({message: 'Credentials valid'});
-     }
-     else {
-           res.status(200).send({message: 'Credentials not valid'});
-     }
-   });
- }
-});
-
-router.get( '/news/' , function (req, res) {
-  NewsItem.find( {}, function (err, items, count) {
-    res.json({items: items});
-  } );
-} );
-router.post( '/news/', function (req, res) {
-
-  if(!req.body.hasOwnProperty('content') ||
-     !req.body.hasOwnProperty('user_id') ||
-     !req.body.hasOwnProperty('password')) {
-      res.statusCode = 400;
-      return res.send('Error 400: Post syntax incorrect.');
-      }
-  //bcrypt.compareSync(password, doc['password_hash'])
-
-  User.findOne({user_id: req.body.user_id}, function (err, user) {
-    if(user && bcrypt.compareSync(req.body.password, user.password)) {
-      new NewsItem( {
-        content: req.body.content,
-        user_id: req.body.user_id,
-        updated_at: Date.now()
-      } ).save( function ( err, item, count ) {
-        if(err){
-          return res.send(err);
-        }
-        else{
-          res.json({message: 'News Item added'});
-        }
-
-      } );
-
-    }
-    else {
-      res.statusCode = 400;
-      return res.send('Error 400: Authentication Error');
-    }
-
+  var token = jwt.sign(payload, 'secret', {
+    expiresInMinutes: 1440 // expires in 24 hours
   });
-});
+  res.json({
+    message: 'login Successful',
+    token: token
+  });
+  console.log(req.user);
+}
+
+
+
+router.post('/', passport.authenticate('local', {
+      session: false
+    }), onLogin);
+
+
 
 
 module.exports = router;
