@@ -1,5 +1,5 @@
 /**
- * strategy.js - Authentication strategy via JSON Web Tokens. To be plugged into
+ * jwt-strategy.js - Authentication strategy via JSON Web Tokens. To be plugged into
  *  passport.js.
  */
 var path = require('path');

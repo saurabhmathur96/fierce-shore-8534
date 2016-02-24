@@ -13,12 +13,12 @@ var NewsItem = require(path.join(__dirname, '..', 'models', 'news-item'));
 function onFindAll(req, res) {
   function onFind(err, items) {
     if (err) {
-      res.status(500).json({
+      return res.status(500).json({
         items: [],
         message: "An error occured"
       })
     }
-    res.json({
+    return res.json({
       items: items
     });
   }
@@ -68,11 +68,11 @@ function onCreate(req, res) {
 }
 
 router.get('/', passport.authenticate('jwt', {
-      session: false
-    }), onFindAll);
+  session: false
+}), onFindAll);
 
 router.post('/', passport.authenticate('jwt', {
-      session: false
-    }), onCreate);
+  session: false
+}), onCreate);
 
 module.exports = router;

@@ -10,7 +10,8 @@ var NewsItem = new Schema({
   content : String,
   updated_at : {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
+    expires: '86400s'
   }
 });
 

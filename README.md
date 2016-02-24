@@ -1,4 +1,11 @@
-# News app
+# Ping News Application Server
+
+Every post expires in 24 hours (86400 seconds).
+
+## Requirements
+- Node.js
+- mongodb
+
 ## Routes
 - /api/login/
 - /api/news/
