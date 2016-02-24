@@ -7,6 +7,7 @@ var JwtStrategy = require('passport-jwt').Strategy,
   ExtractJwt = require('passport-jwt').ExtractJwt;
 var User = require(path.join(__dirname, '..', 'models', 'user'));
 
+var config = require(path.join(__dirname, '..', 'config'));
 
 
 function verifyUser(payload, done) {
@@ -29,7 +30,7 @@ function verifyUser(payload, done) {
 
 var options = {};
 options.jwtFromRequest = ExtractJwt.fromAuthHeader();
-options.secretOrKey = 'secret';
+options.secretOrKey = config.SECRET;
 options.passReqToCallback = false;
 
 var jwtStrategy = new JwtStrategy(options, verifyUser);

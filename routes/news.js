@@ -1,7 +1,7 @@
 /**
- * news.js - handles routes at '/news/'
+ * news.js - create new news-item, get all news-items.
  *
- * create new news-item, get all news-items.
+ * authentication needed.
  */
 var path = require('path');
 var router = require('express').Router();

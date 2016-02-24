@@ -7,7 +7,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-var mongoUri = process.env.NEWSAPP_MONGOLAB_URI || 'mongodb://localhost/NewsApp'
+var config = require(path.join(__dirname,  'config'));
+
+var mongoUri = config.MONGO_URI;
 mongoose.connect(mongoUri);
 
 
@@ -22,9 +24,6 @@ passport.use(jwtStrategy);
 passport.use(localStrategy);
 app.use(passport.initialize());
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

@@ -1,3 +1,7 @@
+/**
+ * register.js - handles new registrations
+ *
+ */
 var path = require('path');
 var User = require(path.join(__dirname, '..', 'models', 'user'));
 var router = require('express').Router();
